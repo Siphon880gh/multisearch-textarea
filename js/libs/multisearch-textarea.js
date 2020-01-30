@@ -43,31 +43,34 @@ let MultisearchTextarea = function(params) {
       matchesQPtr++;
       if(matchesQPtr < matchesQueue.length) {
           let matchLine = matchesQueue[matchesQPtr];
-          jumpAndHighlight(matchLine, lines.length, lines, $textarea);
+          jumpAndHighlight(matchLine, $textarea);
       } else {
           matchesQPtr = 0;
           let matchLine = matchesQueue[0];
-          jumpAndHighlight(matchLine, lines.length, lines, $textarea);
+          jumpAndHighlight(matchLine, $textarea);
       }
     } // jumpBy$PartialText
 
-    function jumpAndHighlight(lineNumber, lineLength, lines, $ta) {
+    function jumpAndHighlight(lineNumber, $ta) {
         // alert("Highlighted and jumped");
+        var lines = $ta.val().split("\n"),
+            lineLength = lines.length;
+    
         var charsStart = 0,
             charsEnd = 0;
         for(var i=0; i<lineNumber; i++) {
             charsStart+=lines[i].length+1;
         }
         charsEnd=charsStart+lines[lineNumber].length;
-
+    
         $ta.focus();
         $ta[0].selectionStart = charsStart;
         $ta[0].selectionEnd = charsEnd;
-
+    
         var scrollHeight = $ta[0].scrollHeight,
             clientHeight = $ta[0].clientHeight,
             scrollTo = Math.round((lineNumber/lineLength)*scrollHeight);
-
+    
         // And to scroll to the middle whether than top:
         scrollTo -= Math.round(clientHeight/2);
         $ta.scrollTop(scrollTo);
